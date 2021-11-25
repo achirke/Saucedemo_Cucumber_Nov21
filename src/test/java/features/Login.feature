@@ -1,27 +1,26 @@
 @LoginFeature
-Feature: Swag Login
+Feature: Login Feature Scenario
 
-  Background: 
-    Given user has navigated to Swag Login Page
-
-  @Test1
-  Scenario Outline: Positive Login
-    When user enter correct username "<Username>" and password "<Password>"
-    And user clicks on Login Button
-    Then User should be landed on Products Page"<Name>"
+  Scenario Outline: Possitive Login Feature
+    Given User Opened Swag Lab Application
+    When User Enters username "<UserName>"
+    And User Enter Password "<password>"
+    And Clicks on Login Button
+    Then User Should be on the Products Page
 
     Examples: 
-      | Username     | Password     | Name      |
-      | problem_user | secret_sauce | PRODUCTS |
+      | UserName      | password     |
+      | standard_user | secret_sauce |
 
-  @Test2
-  Scenario Outline: Negative Login
-    When user enter correct username "<Username>" and password "<Password>"
-    And user clicks on Login Button
-    Then you should get error messgae"<Error>"
+  Scenario Outline: Negetive Login Feature
+    Given User Opened Swag Lab Application
+    When User Enters username "<UserName>"
+    And User Enter Password "<password>"
+    And Clicks on Login Button
+    Then User Should Get "<Error>"
 
     Examples: 
-      | Username     | Password     | Error                                                                     |
-      | problem_user | s!cret_sauce | Epic sadface: Username and password do not match any user in this service |
+      | UserName      | password | Error                                                                     |
+      | standard_user | Test1234 | Epic sadface: Username and password do not match any user in this service |
 
   

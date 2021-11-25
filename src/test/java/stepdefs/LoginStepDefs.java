@@ -6,89 +6,68 @@ import org.junit.Assert;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
+import org.openqa.selenium.support.ui.WebDriverWait;
 
-import io.cucumber.datatable.DataTable;
 import io.cucumber.java.en.And;
 import io.cucumber.java.en.Given;
 import io.cucumber.java.en.Then;
 import io.cucumber.java.en.When;
 
 
-
 public class LoginStepDefs {
-	
-	
-		WebDriver driver = Baseclass.driver;
 
-	    @Given("^user has navigated to Swag Login Page$")
-	    public void user_has_navigated_to_the_login_page() throws Throwable {
-	    	       
-		    driver.get("https://www.saucedemo.com/");
-	        driver.manage().window().maximize();
-	        driver.manage().timeouts().implicitlyWait(5000, TimeUnit.MILLISECONDS);
+	WebDriver driver = Baseclass.driver;
 
-	    }
+	@Given("^User Opened Swag Lab Application$")
+	public void user_opened_swag_lab_application() throws Throwable {
 
-	    @When("^user enter correct username and password$")
-	    public void user_enter_correct_username_and_password() throws Throwable {	
-	    	
-	    	WebElement username =driver.findElement(By.xpath("//input[@name='user-name']"));
-	    	username.sendKeys("standard_user");
-			
-			WebElement password =driver.findElement(By.xpath("//input[@name='password']"));
-			password.sendKeys("secret_sauce");
+		driver.get("https://www.saucedemo.com/");
+		driver.manage().window().maximize();
+		driver.manage().timeouts().implicitlyWait(4000, TimeUnit.MILLISECONDS);
+		WebDriverWait wait = new WebDriverWait(driver,30);
 
-	    }
+	}
 
-	    @And("^user clicks on Login Button$")
-	    public void user_clicks_on_login_button() throws Throwable {
+	@When("^User Enters username \"([^\"]*)\"$")
+	public void user_enters_username_something(String UserName) throws Throwable {
+		WebElement email = driver.findElement(By.xpath("//input[@id='user-name']"));
+		email.sendKeys(UserName);
 
-	    	WebElement loginbuttn =driver.findElement(By.xpath("//input[@id='login-button']"));
-			loginbuttn.click();
-	       
-	    }
-	    
-//	    @Then("^user should be exit$")
-//	    public void  user_should_be_exit() throws Throwable{
-//	    	driver.close();
-//	    }
+	}
 
-	    @When("^user enter correct username \"([^\"]*)\" and password \"([^\"]*)\"$")
-	    public void user_enter_correct_username_something_and_password_something(String usernameVal, String passwordVal) throws Throwable {
+	@And("^User Enter Password \"([^\"]*)\"$")
+	public void user_enter_password_something(String password) throws Throwable {
+		WebElement pass = driver.findElement(By.cssSelector("input[id=password]"));
+		pass.sendKeys(password);
+	}
 
-	    	WebElement username =driver.findElement(By.xpath("//input[@name='user-name']"));
-	    	username.sendKeys(usernameVal);
-			
-			WebElement password =driver.findElement(By.xpath("//input[@name='password']"));
-			password.sendKeys(passwordVal);
-	    }
-	    
-	  
-	    
-	    @Then("^you should get error messgae\"([^\"]*)\"$")
-	    public void you_should_get_error_messgaesomething(String Expmsg) throws Throwable 
-	    {
-	     	WebElement Error1= driver.findElement(By.xpath("//h3[starts-with(text(),'Epic sadface: ')]"));
-			String Actualmsg= Error1.getText();
-			Assert.assertEquals(Expmsg,Actualmsg);
-	       
-	    }
-	    
-	    @Then("^User should be landed on Products Page\"([^\"]*)\"$")
-	    public void user_should_be_landed_on_products_pagesomething( String Name) throws Throwable {
-	    	
-	    	WebElement Error1= driver.findElement(By.xpath("//span[@class='title']"));
-			String Actualmsg= Error1.getText();
-			Assert.assertEquals(Name,Actualmsg);
-	       
-	    }
 
-	    
+	@And("^Clicks on Login Button$")
+	public void clicks_on_login_button() throws Throwable {
+
+		WebElement btn_sign = driver.findElement(By.cssSelector("input[id=login-button]"));
+		btn_sign.click();
+
+	}
+
+	@Then("^User Should be on the Products Page$")
+	public void user_should_be_on_the_products_page() throws Throwable {
+		WebElement check_status = driver.findElement(By.xpath("//span[text()='Products']"));
+
+		String Expected ="PRODUCTS";
+		Assert.assertEquals(Expected, check_status.getText());
+	}
+
+	@Then("^User Should Get \"([^\"]*)\"$")
+	public void user_should_get_something(String error) throws Throwable {
+		WebElement error_button = driver.findElement(By.xpath("//h3[contains(text(),'Epic sadface: Username and password do not match any user in this service')]"));
+		Assert.assertEquals(error, error_button.getText());
+	}
 
 	
-	
-	    	
-	   
+
+
+
 
 }
 
